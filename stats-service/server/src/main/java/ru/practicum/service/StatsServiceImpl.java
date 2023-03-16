@@ -1,6 +1,8 @@
 package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.EndpointHitDto;
@@ -17,9 +19,15 @@ import java.util.List;
 public class StatsServiceImpl implements StatsService {
 
     private final StatsRepository repository;
+
     @Override
     public List<ViewStatsDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        return null;
+        PageRequest pageable = PageRequest.of(0, 10);
+        if (unique) {
+            return repository.findUniqueViewStats(start, end, uris, pageable);
+        } else {
+            return repository.findViewStats(start, end, uris, pageable);
+        }
     }
 
     @Transactional

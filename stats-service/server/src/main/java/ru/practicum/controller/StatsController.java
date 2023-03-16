@@ -1,17 +1,17 @@
 package ru.practicum.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.exception.BadRequestException;
-import ru.practicum.mapper.DateTimeMapper;
 import ru.practicum.service.StatsService;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,15 +26,16 @@ public class StatsController {
 
 
     @GetMapping("/stats")
-    public ResponseEntity<List<ViewStatsDto>> get(@RequestParam @NotBlank String start,
-                                                  @RequestParam @NotBlank String end,
+    public ResponseEntity<List<ViewStatsDto>> get(@RequestParam @NotBlank
+                                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                                  @RequestParam @NotBlank
+                                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                                   @RequestParam List<String> uris,
                                                   @RequestParam(defaultValue = "false") Boolean unique) {
-        LocalDateTime startDate = DateTimeMapper.toLocalDateTime(start);
-        LocalDateTime endDate = DateTimeMapper.toLocalDateTime(end);
-        validateParamForGetMapping(startDate, endDate);
+
+        validateParamForGetMapping(start, end);
         log.info("Получен запрос GET /stats");
-        return new ResponseEntity<List<ViewStatsDto>>(service.get(startDate, endDate, uris, unique), HttpStatus.OK);
+        return new ResponseEntity<List<ViewStatsDto>>(service.get(start, end, uris, unique), HttpStatus.OK);
     }
 
 
