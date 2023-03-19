@@ -1,6 +1,5 @@
 package ru.practicum.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,14 +34,14 @@ public class StatsController {
 
         validateParamForGetMapping(start, end);
         log.info("Получен запрос GET /stats");
-        return new ResponseEntity<List<ViewStatsDto>>(service.get(start, end, uris, unique), HttpStatus.OK);
+        return new ResponseEntity<>(service.get(start, end, uris, unique), HttpStatus.OK);
     }
 
 
     @PostMapping("/hit")
     public ResponseEntity<EndpointHitDto> save(@RequestBody EndpointHitDto dto) {
         log.info("Получен запрос POST /hit");
-        return new ResponseEntity<EndpointHitDto>(service.save(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(dto), HttpStatus.CREATED);
     }
 
     private void validateParamForGetMapping(LocalDateTime startDate, LocalDateTime endDate) {
