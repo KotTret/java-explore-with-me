@@ -11,7 +11,6 @@ import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.service.StatsService;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,11 +24,11 @@ public class StatsController {
 
 
     @GetMapping("/stats")
-    public ResponseEntity<List<ViewStatsDto>> get(@RequestParam @NotBlank
+    public ResponseEntity<List<ViewStatsDto>> get(@RequestParam
                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                                  @RequestParam @NotBlank
+                                                  @RequestParam
                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                                  @RequestParam List<String> uris,
+                                                  @RequestParam(required = false) List<String> uris,
                                                   @RequestParam(defaultValue = "false") Boolean unique) {
 
         validateParamForGetMapping(start, end);
@@ -45,8 +44,8 @@ public class StatsController {
     }
 
     private void validateParamForGetMapping(LocalDateTime startDate, LocalDateTime endDate) {
-        if (startDate.isAfter(endDate) || startDate.equals(endDate)) {
-            throw new BadRequestException("start date is not  before end date");
+        if (startDate.isAfter(endDate)) {
+            throw new BadRequestException("start date is after end date");
         }
     }
 }
