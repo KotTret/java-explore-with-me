@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.EventFullDto;
 import ru.practicum.ewm.base.dto.EventShortDto;
+import ru.practicum.ewm.publicApi.dto.RequestParamForEvent;
+import ru.practicum.ewm.publicApi.service.event.PublicEventsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 @RequestMapping("/events")
 public class PublicEventsController {
 
-    public final  PublicEventsService eventsService;
+    public final PublicEventsService eventsService;
 
     @GetMapping
     public ResponseEntity<List<EventShortDto>> getAll(@RequestParam(required = false) String text,
@@ -34,8 +36,19 @@ public class PublicEventsController {
         log.info("Получен запрос GET /events c параметрами: text = {}, categories = {}, paid = {}, rangeStart = {}, " +
                 "rangeEnd = {}, onlyAvailable = {}, sort = {}, from = {}, size = {}", text, categories.toArray(), paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
-        return new ResponseEntity<>(eventsService.getAll(text, categories, paid, rangeStart, rangeEnd,
-                onlyAvailable, sort, from, size, request), HttpStatus.OK);
+        RequestParamForEvent param = RequestParamForEvent.builder()
+                .text(text)
+                .categories(categories)
+                .paid(paid)
+                .rangeStart(rangeStart)
+                .rangeEnd(rangeEnd)
+                .onlyAvailable(onlyAvailable)
+                .sort(sort)
+                .from(from)
+                .size(size)
+                .request(request)
+                .build();
+        return new ResponseEntity<>(eventsService.getAll(param), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

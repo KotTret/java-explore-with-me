@@ -14,15 +14,15 @@ public class EventFullDto {
     private Integer id;
     private String annotation;
     private CategoryDto category;
-    private int confirmedRequests;
-    private String createdOn;
+    private long confirmedRequests;
+    private LocalDateTime createdOn;
     private String description;
     private LocalDateTime eventDate;
     private UserShortDto initiator;
     private LocationDto location;
     private boolean paid;
     private Long participantLimit;
-    private String publishedOn;
+    private LocalDateTime publishedOn;
     private boolean requestModeration;
     private State state;
     private String title;

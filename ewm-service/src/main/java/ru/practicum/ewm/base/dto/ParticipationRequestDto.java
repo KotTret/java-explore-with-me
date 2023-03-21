@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ParticipationRequestDto {
-    private Integer id;
+    private Long id;
     private String created;
     private Integer event;
     private Long requester;

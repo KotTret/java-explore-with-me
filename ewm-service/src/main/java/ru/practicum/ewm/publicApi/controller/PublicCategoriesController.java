@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.CategoryDto;
+import ru.practicum.ewm.publicApi.service.category.PublicCategoriesService;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestMapping("/categories")
 public class PublicCategoriesController {
 
-    public final  PublicCategoriesService categoriesService;
+    public final PublicCategoriesService categoriesService;
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAll(@RequestParam(defaultValue = "0") int from,
@@ -27,6 +28,6 @@ public class PublicCategoriesController {
     @GetMapping("/{catId}")
     public ResponseEntity<CategoryDto> get(@PathVariable Integer catId) {
         log.info("Получен запрос GET /categories/{}", catId);
-        return new ResponseEntity<>(categoriesService.get(catId));
+        return new ResponseEntity<>(categoriesService.get(catId), HttpStatus.OK);
     }
 }

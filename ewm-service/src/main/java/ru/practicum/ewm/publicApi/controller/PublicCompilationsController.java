@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.base.dto.CompilationDto;
+import ru.practicum.ewm.publicApi.service.compilation.PublicCompilationsService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/compilations")
 public class PublicCompilationsController {
 
-    public final  PublicCompilationsService compilationsService;
+    public final PublicCompilationsService compilationsService;
 
     @GetMapping
     public ResponseEntity<List<CompilationDto>> getAll(@RequestParam(defaultValue = "false") Boolean pinned,
@@ -25,6 +29,6 @@ public class PublicCompilationsController {
     @GetMapping("/{comId}")
     public ResponseEntity<CompilationDto> get(@PathVariable Integer comId) {
         log.info("Получен запрос GET /compilations/{}", comId);
-        return new ResponseEntity<>(compilationsService.get(comId));
+        return new ResponseEntity<>(compilationsService.get(comId), HttpStatus.OK);
     }
 }

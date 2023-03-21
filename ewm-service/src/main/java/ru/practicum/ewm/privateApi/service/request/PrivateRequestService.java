@@ -1,0 +1,13 @@
+package ru.practicum.ewm.privateApi.service.request;
+
+import ru.practicum.ewm.base.dto.ParticipationRequestDto;
+
+import java.util.List;
+
+public interface PrivateRequestService {
+    List<ParticipationRequestDto> getRequests(Long userId);
+
+    ParticipationRequestDto create(Long userId, Integer eventId);
+
+    ParticipationRequestDto update(Long userId, Integer requestsId);
+}

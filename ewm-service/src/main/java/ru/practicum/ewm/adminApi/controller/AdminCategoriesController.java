@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.adminApi.service.category.AdminCategoriesService;
 import ru.practicum.ewm.base.dto.*;
 
 import javax.validation.Valid;
@@ -19,7 +20,7 @@ public class AdminCategoriesController {
     public final AdminCategoriesService service;
 
     @PostMapping
-    public ResponseEntity<List<EventFullDto>> create(@RequestBody @Valid NewCategoryDto dto) {
+    public ResponseEntity<CategoryDto> create(@RequestBody @Valid NewCategoryDto dto) {
         log.info("Получен запрос POST /admin/categories c новой категорией: {}", dto.getName());
         return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
     }

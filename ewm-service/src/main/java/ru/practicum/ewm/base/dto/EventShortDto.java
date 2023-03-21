@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class EventShortDto {
     private String annotation;
     private CategoryDto category;
-    private int confirmedRequests;
+    private long confirmedRequests;
     private LocalDateTime eventDate;
     private Integer id;
     private UserShortDto initiator;

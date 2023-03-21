@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.privateApi.service.request.PrivateRequestService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,14 +27,14 @@ public class PrivateRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<List<EventFullDto>> create(@PathVariable Long userId,
+    public ResponseEntity<ParticipationRequestDto> create(@PathVariable Long userId,
                                                      @RequestParam Integer eventId) {
         log.info("Получен запрос POST /users/{}/requests c новым запросом на участие в Event с id = {}", userId, eventId);
         return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.OK);
     }
 
     @PatchMapping("/requests/{requestsId}/cancel")
-    public ResponseEntity<List<EventFullDto>> update(@PathVariable Long userId, @PathVariable Integer requestsId) {
+    public ResponseEntity<ParticipationRequestDto> update(@PathVariable Long userId, @PathVariable Integer requestsId) {
         log.info("Получен запрос PATCH /users/{}/requests/requests/{requestsId}/cancel" +
                 " c отменой запроса id = {}", userId, requestsId);
         return new ResponseEntity<>(service.update(userId, requestsId), HttpStatus.OK);

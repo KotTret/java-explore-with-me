@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.privateApi.service.event.PrivateEventsService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -42,14 +43,14 @@ public class PrivateEventsController {
     }
 
     @PostMapping
-    public ResponseEntity<List<EventFullDto>> create(@PathVariable Long userId,
+    public ResponseEntity<EventFullDto> create(@PathVariable Long userId,
                                                      @RequestBody @Valid NewEventDto eventDto) {
         log.info("Получен запрос POST /users/{}/events c новым событием: {}", userId, eventDto);
         return new ResponseEntity<>(service.create(userId, eventDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}")
-    public ResponseEntity<List<EventFullDto>> update(@PathVariable Long userId, @PathVariable Integer eventId,
+    public ResponseEntity<EventFullDto> update(@PathVariable Long userId, @PathVariable Integer eventId,
                                                      @RequestBody @Valid UpdateEventUserRequest eventDto) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}" +
                 " c обновлённым событием id = {}: {}", userId, eventId, eventDto);
@@ -61,7 +62,7 @@ public class PrivateEventsController {
                                                                               @PathVariable Integer eventId,
                                                                               @RequestBody EventRequestStatusUpdateRequest request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
-                " на обновление статуса события id = {}: {}", userId, eventId, eventDto);
+                " на обновление статуса события id = {}: {}", userId, eventId, request);
         return new ResponseEntity<>(service.updateRequestStatus(userId, eventId, request), HttpStatus.OK);
     }
 
