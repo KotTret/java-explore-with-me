@@ -14,7 +14,7 @@ public class PublicCategoriesServiceImpl implements PublicCategoriesService {
     }
 
     @Override
-    public CategoryDto get(Integer catId) {
+    public CategoryDto get(Long catId) {
         return null;
     }
 }

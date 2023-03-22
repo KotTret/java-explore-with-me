@@ -7,7 +7,7 @@ import ru.practicum.ewm.base.dto.UpdateCompilationRequest;
 public interface AdminCompilationService {
     CompilationDto save(NewCompilationDto newCompilationDto);
 
-    void delete(Integer compId);
+    void delete(Long compId);
 
-    CompilationDto update(Integer compId, UpdateCompilationRequest updateCompilationRequest);
+    CompilationDto update(Long compId, UpdateCompilationRequest updateCompilationRequest);
 }

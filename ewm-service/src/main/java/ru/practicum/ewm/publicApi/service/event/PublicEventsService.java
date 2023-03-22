@@ -10,5 +10,5 @@ public interface PublicEventsService {
 
     List<EventShortDto> getAll(RequestParamForEvent param);
 
-    EventFullDto get(Integer id);
+    EventFullDto get(Long id);
 }

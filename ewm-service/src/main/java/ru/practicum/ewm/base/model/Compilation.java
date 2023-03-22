@@ -16,7 +16,7 @@ public class Compilation {
     @Id
     @Column(name = "compilation_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Long id;
     @Column(name = "pinned")
     private boolean pinned;
     @Column(name = "title", nullable = false)

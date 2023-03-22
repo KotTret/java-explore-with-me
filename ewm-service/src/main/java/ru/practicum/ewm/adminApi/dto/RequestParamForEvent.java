@@ -16,7 +16,7 @@ public class RequestParamForEvent {
 
     private List<Long> users;
     private List<State> states;
-    private List<Integer> categories;
+    private List<Long> categories;
     private String rangeStart;
     private String rangeEnd;
     private int from;

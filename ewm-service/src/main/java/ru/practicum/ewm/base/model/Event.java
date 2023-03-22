@@ -21,7 +21,7 @@ public class Event {
     @Id
     @Column(name = "event_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Long id;
 
     @Column(name = "annotation", nullable = false)
     private String annotation;

@@ -25,7 +25,7 @@ public class AdminEventsController {
     @GetMapping()
     public ResponseEntity<List<EventFullDto>> getAll(@RequestParam(required = false) List<Long> users,
                                                      @RequestParam(required = false) List<State> states,
-                                                     @RequestParam(required = false) List<Integer> categories,
+                                                     @RequestParam(required = false) List<Long> categories,
                                                      @RequestParam(required = false) String rangeStart,
                                                      @RequestParam(required = false) String rangeEnd,
                                                      @RequestParam(defaultValue = "0") int from,
@@ -44,7 +44,7 @@ public class AdminEventsController {
     }
 
     @PatchMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> update(@PathVariable Integer eventId,
+    public ResponseEntity<EventFullDto> update(@PathVariable Long eventId,
                                                @RequestBody UpdateEventAdminRequest updateEvent) {
         log.info("Получен запрос PATCH /admin/events/{} на изменение события.", eventId);
         return ResponseEntity.ok(service.update(eventId, updateEvent));

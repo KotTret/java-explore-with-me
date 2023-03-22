@@ -14,12 +14,12 @@ public class AdminCompilationServiceImpl implements AdminCompilationService{
     }
 
     @Override
-    public void delete(Integer compId) {
+    public void delete(Long compId) {
 
     }
 
     @Override
-    public CompilationDto update(Integer compId, UpdateCompilationRequest updateCompilationRequest) {
+    public CompilationDto update(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         return null;
     }
 }

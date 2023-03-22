@@ -13,7 +13,7 @@ public class PublicCompilationsServiceImpl implements PublicCompilationsService{
     }
 
     @Override
-    public CompilationDto get(Integer comId) {
+    public CompilationDto get(Long comId) {
         return null;
     }
 }

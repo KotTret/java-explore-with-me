@@ -7,7 +7,7 @@ import java.util.List;
 public interface PrivateRequestService {
     List<ParticipationRequestDto> getRequests(Long userId);
 
-    ParticipationRequestDto create(Long userId, Integer eventId);
+    ParticipationRequestDto create(Long userId, Long eventId);
 
-    ParticipationRequestDto update(Long userId, Integer requestsId);
+    ParticipationRequestDto update(Long userId, Long requestsId);
 }

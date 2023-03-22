@@ -16,7 +16,7 @@ public class PublicEventsServiceImpl implements PublicEventsService{
     }
 
     @Override
-    public EventFullDto get(Integer id) {
+    public EventFullDto get(Long id) {
         return null;
     }
 }

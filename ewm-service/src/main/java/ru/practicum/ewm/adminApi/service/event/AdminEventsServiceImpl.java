@@ -11,7 +11,7 @@ import java.util.List;
 public class AdminEventsServiceImpl implements AdminEventsService{
 
     @Override
-    public EventFullDto update(Integer eventId, UpdateEventAdminRequest updateEvent) {
+    public EventFullDto update(Long eventId, UpdateEventAdminRequest updateEvent) {
         return null;
     }
 

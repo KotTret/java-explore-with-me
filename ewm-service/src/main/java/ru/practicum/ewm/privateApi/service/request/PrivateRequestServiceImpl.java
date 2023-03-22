@@ -14,12 +14,12 @@ public class PrivateRequestServiceImpl implements PrivateRequestService{
     }
 
     @Override
-    public ParticipationRequestDto create(Long userId, Integer eventId) {
+    public ParticipationRequestDto create(Long userId, Long eventId) {
         return null;
     }
 
     @Override
-    public ParticipationRequestDto update(Long userId, Integer requestsId) {
+    public ParticipationRequestDto update(Long userId, Long requestsId) {
         return null;
     }
 }

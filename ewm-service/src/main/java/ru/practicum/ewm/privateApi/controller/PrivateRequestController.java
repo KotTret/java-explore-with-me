@@ -28,13 +28,13 @@ public class PrivateRequestController {
 
     @PostMapping
     public ResponseEntity<ParticipationRequestDto> create(@PathVariable Long userId,
-                                                     @RequestParam Integer eventId) {
+                                                     @RequestParam Long eventId) {
         log.info("Получен запрос POST /users/{}/requests c новым запросом на участие в Event с id = {}", userId, eventId);
         return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.OK);
     }
 
     @PatchMapping("/requests/{requestsId}/cancel")
-    public ResponseEntity<ParticipationRequestDto> update(@PathVariable Long userId, @PathVariable Integer requestsId) {
+    public ResponseEntity<ParticipationRequestDto> update(@PathVariable Long userId, @PathVariable Long requestsId) {
         log.info("Получен запрос PATCH /users/{}/requests/requests/{requestsId}/cancel" +
                 " c отменой запроса id = {}", userId, requestsId);
         return new ResponseEntity<>(service.update(userId, requestsId), HttpStatus.OK);

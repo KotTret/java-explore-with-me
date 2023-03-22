@@ -16,7 +16,7 @@ public class NewEventDto {
     @Length(min = 20, max = 2000)
     private String annotation;
     @NotNull
-    private Integer category;
+    private Long category;
     @Length(min = 20, max = 7000)
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,7 +24,7 @@ public class NewEventDto {
     @NotNull
     private LocationDto location;
     private boolean paid;
-    private Integer participantLimit;
+    private Long participantLimit;
     private boolean requestModeration;
     @Length(min = 3, max = 120)
     String title;

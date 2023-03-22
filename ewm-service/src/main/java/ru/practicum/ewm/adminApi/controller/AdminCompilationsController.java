@@ -26,14 +26,14 @@ public class AdminCompilationsController {
     }
 
     @DeleteMapping("/{compId}")
-    public ResponseEntity<Void> delete(@PathVariable Integer compId) {
+    public ResponseEntity<Void> delete(@PathVariable Long compId) {
         log.info("Получен запрос DELETE /admin/compilations/{}", compId);
         service.delete(compId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{compId}")
-    public ResponseEntity<CompilationDto> update(@PathVariable Integer compId,
+    public ResponseEntity<CompilationDto> update(@PathVariable Long compId,
                                                  @RequestBody UpdateCompilationRequest updateCompilationRequest) {
         log.info("Получен запрос PATCH /admin/compilations/{} на изменение подборки.", compId);
         return new ResponseEntity(service.update(compId, updateCompilationRequest), HttpStatus.OK);

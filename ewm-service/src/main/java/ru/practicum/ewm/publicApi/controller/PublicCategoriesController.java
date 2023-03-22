@@ -26,7 +26,7 @@ public class PublicCategoriesController {
     }
 
     @GetMapping("/{catId}")
-    public ResponseEntity<CategoryDto> get(@PathVariable Integer catId) {
+    public ResponseEntity<CategoryDto> get(@PathVariable Long catId) {
         log.info("Получен запрос GET /categories/{}", catId);
         return new ResponseEntity<>(categoriesService.get(catId), HttpStatus.OK);
     }

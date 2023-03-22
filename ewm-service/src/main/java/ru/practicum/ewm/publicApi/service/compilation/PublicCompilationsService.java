@@ -7,5 +7,5 @@ import java.util.List;
 public interface PublicCompilationsService {
     List<CompilationDto> getAll(Boolean pinned, int from, int size);
 
-    CompilationDto get(Integer comId);
+    CompilationDto get(Long comId);
 }

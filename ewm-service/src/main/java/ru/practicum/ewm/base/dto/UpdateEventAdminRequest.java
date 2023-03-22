@@ -12,7 +12,7 @@ import ru.practicum.ewm.base.model.Location;
 public class UpdateEventAdminRequest {
     @Length(min = 20, max = 2000)
     String annotation;
-    Integer category;
+    Long category;
     @Length(min = 20, max = 7000)
     String description;
     String eventDate;

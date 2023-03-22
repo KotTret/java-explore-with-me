@@ -27,7 +27,7 @@ public class PublicCompilationsController {
     }
 
     @GetMapping("/{comId}")
-    public ResponseEntity<CompilationDto> get(@PathVariable Integer comId) {
+    public ResponseEntity<CompilationDto> get(@PathVariable Long comId) {
         log.info("Получен запрос GET /compilations/{}", comId);
         return new ResponseEntity<>(compilationsService.get(comId), HttpStatus.OK);
     }
