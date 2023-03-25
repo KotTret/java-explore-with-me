@@ -1,8 +1,7 @@
 package ru.practicum.ewm.publicApi.service.category;
 
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.base.dto.CategoryDto;
-import ru.practicum.ewm.publicApi.service.category.PublicCategoriesService;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
 
 import java.util.List;
 

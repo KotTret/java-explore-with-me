@@ -1,4 +1,4 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.Compilation;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NewCompilationDto {
+public class UpdateCompilationRequest {
     private Set<Long> events;
     private Boolean pinned;
     @NotBlank

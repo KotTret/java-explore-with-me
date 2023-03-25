@@ -1,7 +1,8 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.event;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.ewm.base.dto.ParticipationRequestDto;
 
 import java.util.List;
 

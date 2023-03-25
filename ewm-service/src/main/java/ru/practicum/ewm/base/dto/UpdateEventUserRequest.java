@@ -3,6 +3,7 @@ package ru.practicum.ewm.base.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import ru.practicum.ewm.base.dto.location.LocationDto;
 
 import java.time.LocalDateTime;
 

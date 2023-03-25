@@ -1,7 +1,8 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.Compilation;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Getter
@@ -9,8 +10,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateCompilationRequest {
+public class NewCompilationDto {
     private Set<Long> events;
     private Boolean pinned;
+    @NotBlank
     private String title;
 }

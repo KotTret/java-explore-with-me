@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminApi.service.category.AdminCategoriesService;
-import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
+import ru.practicum.ewm.base.dto.Category.NewCategoryDto;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +36,6 @@ public class AdminCategoriesController {
     public ResponseEntity<CategoryDto> update(@RequestBody @Valid NewCategoryDto dto,
                                               @PathVariable Long catId) {
         log.info("Получен запрос PATCH /admin/categories/{} на изменение категориии: {}", catId, dto.getName());
-        return new ResponseEntity(service.update(dto, catId), HttpStatus.OK);
+        return new ResponseEntity<>(service.update(dto, catId), HttpStatus.OK);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminApi.dto.RequestParamForEvent;
 import ru.practicum.ewm.adminApi.service.event.AdminEventsService;
-import ru.practicum.ewm.base.dto.EventFullDto;
+import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.UpdateEventAdminRequest;
 import ru.practicum.ewm.base.enums.State;
 
@@ -40,13 +40,13 @@ public class AdminEventsController {
                 .from(from)
                 .size(size)
                 .build();
-        return new ResponseEntity(service.getAll(param), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAll(param), HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}")
     public ResponseEntity<EventFullDto> update(@PathVariable Long eventId,
                                                @RequestBody UpdateEventAdminRequest updateEvent) {
         log.info("Получен запрос PATCH /admin/events/{} на изменение события.", eventId);
-        return ResponseEntity.ok(service.update(eventId, updateEvent));
+        return new ResponseEntity<>(service.update(eventId, updateEvent), HttpStatus.OK);
     }
 }

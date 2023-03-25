@@ -1,9 +1,6 @@
 package ru.practicum.ewm.base.model;
 
 import lombok.*;
-import ru.practicum.ewm.base.dto.CategoryDto;
-import ru.practicum.ewm.base.dto.LocationDto;
-import ru.practicum.ewm.base.dto.UserShortDto;
 import ru.practicum.ewm.base.enums.State;
 
 import javax.persistence.*;
@@ -49,13 +46,13 @@ public class Event {
     })
     private Location location;
     @Column(name = "paid", nullable = false)
-    private boolean paid;
+    private Boolean paid;
     @Column(name = "participantLimit")
     private Long participantLimit;
     @Column(name = "publishedOn")
     private LocalDateTime publishedOn;
     @Column(name = "requestModeration")
-    private boolean requestModeration;
+    private Boolean requestModeration;
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private State state;

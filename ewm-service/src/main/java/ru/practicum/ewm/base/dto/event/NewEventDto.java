@@ -1,8 +1,9 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import ru.practicum.ewm.base.dto.location.LocationDto;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -23,9 +24,9 @@ public class NewEventDto {
     private LocalDateTime eventDate;
     @NotNull
     private LocationDto location;
-    private boolean paid;
+    private Boolean paid;
     private Long participantLimit;
-    private boolean requestModeration;
+    private Boolean requestModeration;
     @Length(min = 3, max = 120)
     String title;
 

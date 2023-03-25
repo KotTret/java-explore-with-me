@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.base.dto.EventFullDto;
-import ru.practicum.ewm.base.dto.EventShortDto;
+import ru.practicum.ewm.base.dto.event.EventFullDto;
+import ru.practicum.ewm.base.dto.event.EventShortDto;
 import ru.practicum.ewm.publicApi.dto.RequestParamForEvent;
 import ru.practicum.ewm.publicApi.service.event.PublicEventsService;
 

@@ -2,6 +2,7 @@ package ru.practicum.ewm.privateApi.service.event;
 
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.base.dto.event.*;
 
 import java.util.List;
 

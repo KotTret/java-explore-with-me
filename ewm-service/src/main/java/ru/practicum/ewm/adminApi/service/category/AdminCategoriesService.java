@@ -1,7 +1,7 @@
 package ru.practicum.ewm.adminApi.service.category;
 
-import ru.practicum.ewm.base.dto.CategoryDto;
-import ru.practicum.ewm.base.dto.NewCategoryDto;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
+import ru.practicum.ewm.base.dto.Category.NewCategoryDto;
 
 public interface AdminCategoriesService {
     CategoryDto create(NewCategoryDto dto);

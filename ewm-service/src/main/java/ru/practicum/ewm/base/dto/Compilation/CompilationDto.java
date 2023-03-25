@@ -1,6 +1,7 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.Compilation;
 
 import lombok.*;
+import ru.practicum.ewm.base.dto.event.EventShortDto;
 
 import java.util.List;
 

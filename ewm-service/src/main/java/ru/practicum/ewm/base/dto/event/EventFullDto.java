@@ -1,6 +1,9 @@
-package ru.practicum.ewm.base.dto;
+package ru.practicum.ewm.base.dto.event;
 
 import lombok.*;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
+import ru.practicum.ewm.base.dto.location.LocationDto;
+import ru.practicum.ewm.base.dto.user.UserShortDto;
 import ru.practicum.ewm.base.enums.State;
 
 import java.time.LocalDateTime;

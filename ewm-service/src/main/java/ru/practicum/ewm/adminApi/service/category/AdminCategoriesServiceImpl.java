@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.base.dao.CategoriesRepository;
 import ru.practicum.ewm.base.dao.EventRepository;
-import ru.practicum.ewm.base.dto.CategoryDto;
-import ru.practicum.ewm.base.dto.NewCategoryDto;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
+import ru.practicum.ewm.base.dto.Category.NewCategoryDto;
 import ru.practicum.ewm.base.exception.ConditionsNotMetException;
 import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
 import ru.practicum.ewm.base.mapper.CategoryMapper;
 import ru.practicum.ewm.base.model.Category;
+import ru.practicum.ewm.base.util.UtilMergeProperty;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     public void delete(Long catId) {
         if (eventRepository.existsByCategory(get(catId))) {
             throw new ConditionsNotMetException("The category is not empty");
-        } else {
+        } else if (categoriesRepository.existsById(catId)) {
             log.info("Deleted category with id = {}", catId);
             categoriesRepository.deleteById(catId);
         }
@@ -52,7 +53,12 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     @Transactional
     @Override
     public CategoryDto update(NewCategoryDto dto, Long catId) {
-        return null;
+        Category categoryUpdate = CategoryMapper.toEntity(dto);
+        Category categoryTarget = get(catId);
+        UtilMergeProperty.copyProperties(categoryUpdate, categoryTarget);
+        categoriesRepository.flush();
+        log.info("Update category: {}", categoryTarget.getName());
+        return CategoryMapper.toDto(categoryTarget);
     }
 
     private Category get(Long id) {
@@ -62,10 +68,4 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
         return category;
     }
 
-    private boolean existsById(Long id) {
-        if (!eventRepository.existsById(id)) {
-            throw new NotFoundException(String.format("Category not found with id = %s", id));
-        }
-        return true;
-    }
 }

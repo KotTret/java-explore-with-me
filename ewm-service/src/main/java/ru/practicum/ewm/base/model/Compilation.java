@@ -15,10 +15,10 @@ import java.util.List;
 public class Compilation {
     @Id
     @Column(name = "compilation_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "pinned")
-    private boolean pinned;
+    private Boolean pinned;
     @Column(name = "title", nullable = false)
     private String title;
 

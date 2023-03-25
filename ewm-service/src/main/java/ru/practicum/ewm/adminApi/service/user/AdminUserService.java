@@ -1,7 +1,7 @@
 package ru.practicum.ewm.adminApi.service.user;
 
-import ru.practicum.ewm.base.dto.NewUserRequest;
-import ru.practicum.ewm.base.dto.UserDto;
+import ru.practicum.ewm.base.dto.user.NewUserRequest;
+import ru.practicum.ewm.base.dto.user.UserDto;
 
 import java.util.List;
 

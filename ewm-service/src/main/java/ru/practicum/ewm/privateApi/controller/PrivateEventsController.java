@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.base.dto.event.*;
 import ru.practicum.ewm.privateApi.service.event.PrivateEventsService;
 
 import javax.validation.Valid;

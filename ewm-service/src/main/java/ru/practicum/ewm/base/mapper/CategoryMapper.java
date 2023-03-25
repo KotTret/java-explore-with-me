@@ -1,8 +1,8 @@
 package ru.practicum.ewm.base.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.ewm.base.dto.CategoryDto;
-import ru.practicum.ewm.base.dto.NewCategoryDto;
+import ru.practicum.ewm.base.dto.Category.CategoryDto;
+import ru.practicum.ewm.base.dto.Category.NewCategoryDto;
 import ru.practicum.ewm.base.model.Category;
 
 import java.util.List;

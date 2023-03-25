@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminApi.service.compilation.AdminCompilationService;
-import ru.practicum.ewm.base.dto.CompilationDto;
-import ru.practicum.ewm.base.dto.NewCompilationDto;
-import ru.practicum.ewm.base.dto.UpdateCompilationRequest;
+import ru.practicum.ewm.base.dto.Compilation.CompilationDto;
+import ru.practicum.ewm.base.dto.Compilation.NewCompilationDto;
+import ru.practicum.ewm.base.dto.Compilation.UpdateCompilationRequest;
 
 import javax.validation.Valid;
 
@@ -34,8 +34,8 @@ public class AdminCompilationsController {
 
     @PatchMapping("/{compId}")
     public ResponseEntity<CompilationDto> update(@PathVariable Long compId,
-                                                 @RequestBody UpdateCompilationRequest updateCompilationRequest) {
+                                                 @RequestBody @Valid UpdateCompilationRequest updateCompilationRequest) {
         log.info("Получен запрос PATCH /admin/compilations/{} на изменение подборки.", compId);
-        return new ResponseEntity(service.update(compId, updateCompilationRequest), HttpStatus.OK);
+        return new ResponseEntity<>(service.update(compId, updateCompilationRequest), HttpStatus.OK);
     }
 }

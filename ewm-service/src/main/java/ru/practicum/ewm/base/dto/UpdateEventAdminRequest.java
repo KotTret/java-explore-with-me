@@ -1,8 +1,11 @@
 package ru.practicum.ewm.base.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewm.base.model.Location;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,11 +18,12 @@ public class UpdateEventAdminRequest {
     Long category;
     @Length(min = 20, max = 7000)
     String description;
-    String eventDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime eventDate;
     Location location;
-    boolean paid;
+    Boolean paid;
     Long participantLimit;
-    boolean requestModeration;
+    Boolean requestModeration;
     String stateAction;
     @Length(min = 3, max = 120)
     String title;
