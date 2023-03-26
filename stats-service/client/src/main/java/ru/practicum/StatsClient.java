@@ -12,7 +12,6 @@ import ru.practicum.dto.EndpointHitDto;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public class StatsClient extends BaseClient {
     @Autowired
     public StatsClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {

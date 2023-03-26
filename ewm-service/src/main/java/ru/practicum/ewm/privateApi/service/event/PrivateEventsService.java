@@ -8,9 +8,9 @@ import java.util.List;
 public interface PrivateEventsService {
     List<EventShortDto> getAll(Long userId, Integer from, Integer size);
 
-    EventFullDto get(Long userId, Integer eventId);
+    EventFullDto get(Long userId, Long eventId);
 
-    List<ParticipationRequestDto> getRequests(Long userId, Integer eventId);
+    List<ParticipationRequestDto> getRequests(Long userId, Long eventId);
 
     EventFullDto create(Long userId, NewEventDto eventDto);
 

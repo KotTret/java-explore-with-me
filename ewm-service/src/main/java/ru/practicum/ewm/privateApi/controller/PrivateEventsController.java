@@ -31,14 +31,14 @@ public class PrivateEventsController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<EventFullDto> get(@PathVariable Long userId,
-                                            @PathVariable Integer eventId) {
+                                            @PathVariable Long eventId) {
         log.info("Получен запрос GET /users{}/events/{}", userId, eventId);
         return new ResponseEntity<>(service.get(userId, eventId), HttpStatus.OK);
     }
 
     @GetMapping("/{eventId}/requests")
     public ResponseEntity<List<ParticipationRequestDto>> getRequests(@PathVariable Long userId,
-                                                                     @PathVariable Integer eventId) {
+                                                                     @PathVariable Long eventId) {
         log.info("Получен запрос GET /users/{}/events/{}/requests", userId, eventId);
         return new ResponseEntity<>(service.getRequests(userId, eventId), HttpStatus.OK);
     }

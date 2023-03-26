@@ -40,7 +40,7 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     @Override
     public List<EventFullDto> getAll(RequestParamForEvent param) {
         MyPageRequest pageable = new MyPageRequest(param.getFrom(), param.getSize(),
-                Sort.by(Sort.Direction.ASC, "id"));
+                Sort.by(Sort.Direction.ASC, "event_id"));
         List<Event> events = eventRepository.findAllByInitiator_IdInAndStateInAndCategory_IdInAndEventDateBetween(
                 param.getUsers(), param.getStates(), param.getCategories(), param.getRangeStart(),
                 param.getRangeEnd(), pageable);

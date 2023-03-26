@@ -52,8 +52,8 @@ public class PublicEventsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventFullDto> get(@PathVariable Long id) {
+    public ResponseEntity<EventFullDto> get(@PathVariable Long id, HttpServletRequest request) {
         log.info("Получен запрос GET /events/{}", id);
-        return new ResponseEntity<>(eventsService.get(id), HttpStatus.OK);
+        return new ResponseEntity<>(eventsService.get(id, request), HttpStatus.OK);
     }
 }
