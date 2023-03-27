@@ -51,7 +51,7 @@ public class PrivateEventsController {
     }
 
     @PatchMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> update(@PathVariable Long userId, @PathVariable Integer eventId,
+    public ResponseEntity<EventFullDto> update(@PathVariable Long userId, @PathVariable Long eventId,
                                                      @RequestBody @Valid UpdateEventUserRequest eventDto) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}" +
                 " c обновлённым событием id = {}: {}", userId, eventId, eventDto);
@@ -60,7 +60,7 @@ public class PrivateEventsController {
 
     @PatchMapping("/{eventId}/requests")
     public ResponseEntity<EventRequestStatusUpdateResult> updateRequestStatus(@PathVariable Long userId,
-                                                                              @PathVariable Integer eventId,
+                                                                              @PathVariable Long eventId,
                                                                               @RequestBody EventRequestStatusUpdateRequest request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
                 " на обновление статуса события id = {}: {}", userId, eventId, request);

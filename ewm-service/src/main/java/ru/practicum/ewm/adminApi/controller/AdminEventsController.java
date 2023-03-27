@@ -12,7 +12,12 @@ import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.UpdateEventAdminRequest;
 import ru.practicum.ewm.base.enums.State;
 
+import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,19 +29,22 @@ public class AdminEventsController {
 
     @GetMapping()
     public ResponseEntity<List<EventFullDto>> getAll(@RequestParam(required = false) List<Long> users,
-                                                     @RequestParam(required = false) List<State> states,
+                                                     @RequestParam(required = false) List<String> states,
                                                      @RequestParam(required = false) List<Long> categories,
                                                      @RequestParam(required = false) String rangeStart,
                                                      @RequestParam(required = false) String rangeEnd,
                                                      @RequestParam(defaultValue = "0") int from,
                                                      @RequestParam(defaultValue = "10") int size) {
         log.info("Получен запрос GET /admin/events");
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<State> statesEnum = states.stream().map(State::from).filter(Objects::nonNull).collect(Collectors.toList());
         RequestParamForEvent param = RequestParamForEvent.builder()
                 .users(users)
-                .states(states)
+                .states(statesEnum)
                 .categories(categories)
-                .rangeStart(rangeStart)
-                .rangeEnd(rangeEnd)
+                .rangeStart(LocalDateTime.parse(rangeStart, dateTimeFormatter))
+                .rangeEnd(LocalDateTime.parse(rangeEnd, dateTimeFormatter))
                 .from(from)
                 .size(size)
                 .build();

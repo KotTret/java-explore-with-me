@@ -73,7 +73,7 @@ public class ErrorHandler {
                 e.getMessage());
     }*/
 
-    @ExceptionHandler
+/*    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleRuntimeException(final Throwable e) {
         StringWriter writer = new StringWriter();
@@ -89,5 +89,5 @@ public class ErrorHandler {
                 stackTrace,
                 e.getMessage()
         );
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package ru.practicum.ewm.base.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.base.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.base.dto.UpdateEventUserRequest;
 import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.event.EventShortDto;
 import ru.practicum.ewm.base.dto.event.NewEventDto;
@@ -23,7 +24,7 @@ public final class EventMapper {
                 .annotation(dto.getAnnotation())
                 .createdOn(LocalDateTime.now())
                 .description(dto.getDescription())
-                .eventDate(dto.getEventDate())
+                .date(dto.getEventDate())
                 .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
                 .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
@@ -38,11 +39,25 @@ public final class EventMapper {
                 .annotation(dto.getAnnotation())
                 .createdOn(LocalDateTime.now())
                 .description(dto.getDescription())
-                .eventDate(dto.getEventDate())
+                .date(dto.getEventDate())
                 .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
                 .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
                 .requestModeration(dto.getRequestModeration())
+                .state(State.PENDING)
+                .title(dto.getTitle())
+                .build();
+    }
+
+    public static Event toEntity(UpdateEventUserRequest dto) {
+        return Event.builder()
+                .annotation(dto.getAnnotation())
+                .createdOn(LocalDateTime.now())
+                .description(dto.getDescription())
+                .date(dto.getEventDate())
+                .paid(dto.getPaid())
+                .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
+                .participantLimit(dto.getParticipantLimit())
                 .state(State.PENDING)
                 .title(dto.getTitle())
                 .build();
@@ -56,7 +71,7 @@ public final class EventMapper {
                 .confirmedRequests(entity.getConfirmedRequests())
                 .createdOn(entity.getCreatedOn())
                 .description(entity.getDescription())
-                .eventDate(entity.getEventDate())
+                .eventDate(entity.getDate())
                 .initiator(UserMapper.toUserShortDto(entity.getInitiator()))
                 .location(new LocationDto(entity.getLocation().getLat(), entity.getLocation().getLon()))
                 .paid(entity.getPaid())
@@ -79,7 +94,7 @@ public final class EventMapper {
                 .annotation(entity.getAnnotation())
                 .category(CategoryMapper.toDto(entity.getCategory()))
                 .confirmedRequests(entity.getConfirmedRequests())
-                .eventDate(entity.getEventDate())
+                .eventDate(entity.getDate())
                 .initiator(UserMapper.toUserShortDto(entity.getInitiator()))
                 .paid(entity.getPaid())
                 .title(entity.getTitle())

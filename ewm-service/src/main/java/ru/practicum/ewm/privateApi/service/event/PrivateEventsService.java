@@ -14,7 +14,7 @@ public interface PrivateEventsService {
 
     EventFullDto create(Long userId, NewEventDto eventDto);
 
-    EventFullDto update(Long userId, Integer eventId, UpdateEventUserRequest eventDto);
+    EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest eventDto);
 
-    EventRequestStatusUpdateResult updateRequestStatus(Long userId, Integer eventId, EventRequestStatusUpdateRequest request);
+    EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request);
 }

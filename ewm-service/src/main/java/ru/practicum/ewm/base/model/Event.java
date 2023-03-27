@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class Event {
 
     @Id
-    @Column(name = "event_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "annotation", nullable = false)
@@ -34,8 +34,8 @@ public class Event {
     private LocalDateTime createdOn;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "eventDate")
-    private LocalDateTime eventDate;
+    @Column(name = "date")
+    private LocalDateTime date;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "initiator_id", nullable = false)
     private User initiator;

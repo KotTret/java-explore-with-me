@@ -1,6 +1,9 @@
 package ru.practicum.ewm.base.dto;
 
 import lombok.*;
+import ru.practicum.ewm.base.enums.Status;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -9,8 +12,8 @@ import lombok.*;
 @Builder
 public class ParticipationRequestDto {
     private Long id;
-    private String created;
-    private Integer event;
+    private LocalDateTime created;
+    private Long event;
     private Long requester;
-    private String status;
+    private Status status;
 }
