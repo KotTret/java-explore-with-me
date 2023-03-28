@@ -6,7 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.ewm.base.dao.CategoriesRepository;
 import ru.practicum.ewm.base.dao.EventRepository;
 import ru.practicum.ewm.base.dao.RequestRepository;
@@ -17,10 +16,8 @@ import ru.practicum.ewm.base.enums.State;
 import ru.practicum.ewm.base.enums.Status;
 import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
-import ru.practicum.ewm.base.mapper.CompilationMapper;
 import ru.practicum.ewm.base.mapper.EventMapper;
 import ru.practicum.ewm.base.mapper.RequestMapper;
-import ru.practicum.ewm.base.model.Compilation;
 import ru.practicum.ewm.base.model.Event;
 import ru.practicum.ewm.base.model.Request;
 import ru.practicum.ewm.base.util.UtilMergeProperty;
@@ -47,7 +44,7 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     @Override
     public List<EventShortDto> getAll(Long userId, Integer from, Integer size) {
         MyPageRequest pageRequest = new MyPageRequest(from, size,
-                Sort.by(Sort.Direction.ASC, "event_id"));
+                Sort.by(Sort.Direction.ASC, "id"));
         List<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository.findAll(pageRequest).toList());
         log.info("Get events list size: {}", eventShorts.size());
         return eventShorts;
@@ -95,19 +92,23 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     @Transactional
     @Override
     public EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest eventDto) {
-        checkEventDate(eventDto.getEventDate());
         Event eventUpdate = EventMapper.toEntity(eventDto);
-        eventUpdate.setCategory(categoriesRepository.findById(eventDto.getCategory())
-                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found",
-                        eventDto.getCategory()))));
+        if (eventDto.getCategory() != null) {
+            eventUpdate.setCategory(categoriesRepository.findById(eventDto.getCategory())
+                    .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found",
+                            eventDto.getCategory()))));
+        }
         Event eventTarget = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Event not found with id = %s and userId = %s", eventId, userId)));
         if (eventTarget.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event must not be published");
         }
-        eventTarget.setState(State.valueOf(eventDto.getStateAction()));
+        if (State.from(eventDto.getStateAction()) != null) {
+            eventTarget.setState(State.valueOf(eventDto.getStateAction()));
+        }
         UtilMergeProperty.copyProperties(eventUpdate, eventTarget);
+        checkEventDate(eventTarget.getDate());
         eventRepository.flush();
         log.info("Update event: {}", eventTarget.getTitle());
         return EventMapper.toEventFullDto(eventTarget);

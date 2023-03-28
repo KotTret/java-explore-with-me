@@ -47,7 +47,7 @@ public class PrivateEventsController {
     public ResponseEntity<EventFullDto> create(@PathVariable Long userId,
                                                      @RequestBody @Valid NewEventDto eventDto) {
         log.info("Получен запрос POST /users/{}/events c новым событием: {}", userId, eventDto);
-        return new ResponseEntity<>(service.create(userId, eventDto), HttpStatus.OK);
+        return new ResponseEntity<>(service.create(userId, eventDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{eventId}")
@@ -64,7 +64,7 @@ public class PrivateEventsController {
                                                                               @RequestBody EventRequestStatusUpdateRequest request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
                 " на обновление статуса события id = {}: {}", userId, eventId, request);
-        return new ResponseEntity<>(service.updateRequestStatus(userId, eventId, request), HttpStatus.OK);
+        return new ResponseEntity<>(service.updateRequestStatus(userId, eventId, request), HttpStatus.CREATED);
     }
 
 }

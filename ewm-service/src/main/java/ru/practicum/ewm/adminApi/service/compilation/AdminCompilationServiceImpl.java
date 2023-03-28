@@ -2,6 +2,7 @@ package ru.practicum.ewm.adminApi.service.compilation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -61,10 +62,17 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     @Transactional
     @Override
     public CompilationDto update(Long compId, UpdateCompilationRequest dto) {
-        Compilation compilationUpdate = CompilationMapper.toEntity(dto);
-        Compilation compilationTarget = get(compId);
-        UtilMergeProperty.copyProperties(compilationUpdate, compilationTarget);
-        compilationRepository.flush();
+        Compilation compilationTarget = compilationRepository.findById(compId)
+                .orElseThrow(() -> new NotFoundException(String.format("Compilation not found with id = %s", compId)));
+
+        BeanUtils.copyProperties(dto, compilationTarget,  "events", "pinned", "title");
+
+        try {
+            compilationRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException(e.getMessage(), e);
+        }
+
         log.info("Update category: {}", compilationTarget.getTitle());
         return CompilationMapper.toDto(compilationTarget);
     }

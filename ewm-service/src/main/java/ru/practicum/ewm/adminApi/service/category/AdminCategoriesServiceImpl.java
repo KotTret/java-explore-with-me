@@ -55,8 +55,13 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     public CategoryDto update(NewCategoryDto dto, Long catId) {
         Category categoryUpdate = CategoryMapper.toEntity(dto);
         Category categoryTarget = get(catId);
-        UtilMergeProperty.copyProperties(categoryUpdate, categoryTarget);
-        categoriesRepository.flush();
+
+        try {
+            UtilMergeProperty.copyProperties(categoryUpdate, categoryTarget);
+            categoriesRepository.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException(e.getMessage(), e);
+        }
         log.info("Update category: {}", categoryTarget.getName());
         return CategoryMapper.toDto(categoryTarget);
     }

@@ -30,14 +30,15 @@ public class PrivateRequestController {
     public ResponseEntity<ParticipationRequestDto> create(@PathVariable Long userId,
                                                      @RequestParam Long eventId) {
         log.info("Получен запрос POST /users/{}/requests c новым запросом на участие в Event с id = {}", userId, eventId);
-        return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.OK);
+        return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/requests/{requestsId}/cancel")
+    @PatchMapping("/{requestsId}/cancel")
     public ResponseEntity<ParticipationRequestDto> update(@PathVariable Long userId, @PathVariable Long requestsId) {
-        log.info("Получен запрос PATCH /users/{}/requests/requests/{requestsId}/cancel" +
+        log.info("Получен запрос PATCH /users/{}/requests/{requestsId}/cancel" +
                 " c отменой запроса id = {}", userId, requestsId);
         return new ResponseEntity<>(service.update(userId, requestsId), HttpStatus.OK);
     }
+    
 
 }

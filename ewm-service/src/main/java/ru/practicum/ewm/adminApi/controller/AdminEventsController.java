@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminApi.dto.RequestParamForEvent;
 import ru.practicum.ewm.adminApi.service.event.AdminEventsService;
 import ru.practicum.ewm.base.dto.event.EventFullDto;
-import ru.practicum.ewm.base.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.base.dto.event.UpdateEventAdminRequest;
 import ru.practicum.ewm.base.enums.State;
 
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,13 +37,17 @@ public class AdminEventsController {
         log.info("Получен запрос GET /admin/events");
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        List<State> statesEnum = states.stream().map(State::from).filter(Objects::nonNull).collect(Collectors.toList());
+        List<State> statesEnum = null;
+        if (states != null) {
+            statesEnum = states.stream().map(State::from).filter(Objects::nonNull).collect(Collectors.toList());
+        }
+
         RequestParamForEvent param = RequestParamForEvent.builder()
                 .users(users)
                 .states(statesEnum)
                 .categories(categories)
-                .rangeStart(LocalDateTime.parse(rangeStart, dateTimeFormatter))
-                .rangeEnd(LocalDateTime.parse(rangeEnd, dateTimeFormatter))
+                .rangeStart(rangeStart != null ? LocalDateTime.parse(rangeStart, dateTimeFormatter) : null)
+                .rangeEnd(rangeEnd != null ? LocalDateTime.parse(rangeEnd, dateTimeFormatter) : null)
                 .from(from)
                 .size(size)
                 .build();

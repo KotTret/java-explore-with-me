@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "compilations")
 public class Compilation {
     @Id
-    @Column(name = "compilation_id", nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "pinned")
@@ -25,6 +26,19 @@ public class Compilation {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "events_compilations",
             joinColumns = @JoinColumn(name = "compilation_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
     private List<Event> events;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Compilation)) return false;
+        return id != null && id.equals(((Compilation) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

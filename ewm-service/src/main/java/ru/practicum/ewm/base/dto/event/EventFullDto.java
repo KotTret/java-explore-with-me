@@ -1,5 +1,6 @@
 package ru.practicum.ewm.base.dto.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewm.base.dto.Category.CategoryDto;
 import ru.practicum.ewm.base.dto.location.LocationDto;
@@ -20,6 +21,7 @@ public class EventFullDto {
     private long confirmedRequests;
     private LocalDateTime createdOn;
     private String description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
     private UserShortDto initiator;
     private LocationDto location;

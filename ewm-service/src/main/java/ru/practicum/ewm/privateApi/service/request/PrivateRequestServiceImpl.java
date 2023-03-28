@@ -49,7 +49,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User not found with id = %s", userId)));
 
-        if (!requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
+        if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
             throw new ConflictException(String.format("Request with requesterId=%d and eventId=%d already exist", userId, eventId));
         }
         if (userId.equals(event.getInitiator().getId())) {

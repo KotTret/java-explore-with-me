@@ -26,7 +26,7 @@ public class PublicCategoriesServiceImpl implements PublicCategoriesService {
     @Override
     public List<CategoryDto> getAll(int from, int size) {
         MyPageRequest pageable = new MyPageRequest(from, size,
-                Sort.by(Sort.Direction.ASC, "category_id"));
+                Sort.by(Sort.Direction.ASC, "id"));
         List<Category> categories = categoriesRepository.findAll(pageable).toList();
         log.info("Получен список всех категорий");
         return CategoryMapper.toDtoList(categories);

@@ -24,7 +24,7 @@ public class PublicCompilationsServiceImpl implements PublicCompilationsService 
     @Override
     public List<CompilationDto> getAll(Boolean pinned, int from, int size) {
         MyPageRequest pageable = new MyPageRequest(from, size,
-                Sort.by(Sort.Direction.ASC, "compilation_id"));
+                Sort.by(Sort.Direction.ASC, "id"));
         List<Compilation> compilations = compilationRepository.findAllByPinned(pinned, pageable);
         log.info("Get list compilations with pinned = {}:", pinned.toString());
         return CompilationMapper.toDtoList(compilations);

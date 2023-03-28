@@ -81,7 +81,7 @@ public class PublicEventsServiceImpl implements PublicEventsService {
 
     private MyPageRequest createPageable(String sort, int from, int size) {
         MyPageRequest pageable = null;
-        if (sort.equals("EVENT_DATE")) {
+        if (sort == null || sort.equals("EVENT_DATE")) {
             pageable = new MyPageRequest(from, size,
                     Sort.by(Sort.Direction.ASC, "event_date"));
         } else if (sort.equals("VIEWS")) {

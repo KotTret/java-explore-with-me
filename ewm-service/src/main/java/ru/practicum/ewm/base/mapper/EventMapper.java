@@ -1,8 +1,8 @@
 package ru.practicum.ewm.base.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.ewm.base.dto.UpdateEventAdminRequest;
-import ru.practicum.ewm.base.dto.UpdateEventUserRequest;
+import ru.practicum.ewm.base.dto.event.UpdateEventAdminRequest;
+import ru.practicum.ewm.base.dto.event.UpdateEventUserRequest;
 import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.event.EventShortDto;
 import ru.practicum.ewm.base.dto.event.NewEventDto;
@@ -40,11 +40,12 @@ public final class EventMapper {
                 .createdOn(LocalDateTime.now())
                 .description(dto.getDescription())
                 .date(dto.getEventDate())
-                .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
+                .location(dto.getLocation() != null ? new Location(dto.getLocation().getLat(),
+                        dto.getLocation().getLon()) : null)
                 .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
                 .requestModeration(dto.getRequestModeration())
-                .state(State.PENDING)
+                .state(State.from(dto.getStateAction()))
                 .title(dto.getTitle())
                 .build();
     }
@@ -56,9 +57,9 @@ public final class EventMapper {
                 .description(dto.getDescription())
                 .date(dto.getEventDate())
                 .paid(dto.getPaid())
-                .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
+                .location(dto.getLocation() != null ? new Location(dto.getLocation().getLat(),
+                        dto.getLocation().getLon()) : null)
                 .participantLimit(dto.getParticipantLimit())
-                .state(State.PENDING)
                 .title(dto.getTitle())
                 .build();
     }

@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,15 +68,16 @@ public class EventCriteriaRepository {
             predicates.add(criteriaBuilder.equal(eventRoot.get("paid"), criteria.getPaid()));
         }
         if (criteria.getRangeStart() != null || criteria.getRangeEnd() != null) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime rangeStart = criteria.getRangeStart() != null
-                    ? LocalDateTime.parse(criteria.getRangeStart())
+                    ? LocalDateTime.parse(criteria.getRangeStart(), dateTimeFormatter)
                     : LocalDateTime.MIN;
             LocalDateTime rangeEnd = criteria.getRangeEnd() != null
-                    ? LocalDateTime.parse(criteria.getRangeEnd())
+                    ? LocalDateTime.parse(criteria.getRangeEnd(), dateTimeFormatter)
                     : LocalDateTime.MAX;
-            predicates.add(criteriaBuilder.between(eventRoot.get("eventDate"), rangeStart, rangeEnd));
+            predicates.add(criteriaBuilder.between(eventRoot.get("date"), rangeStart, rangeEnd));
         } else {
-            predicates.add(criteriaBuilder.between(eventRoot.get("eventDate"), LocalDateTime.now(), LocalDateTime.MAX));
+            predicates.add(criteriaBuilder.between(eventRoot.get("date"), LocalDateTime.now(), LocalDateTime.MAX));
         }
 
         if (criteria.getOnlyAvailable() != null && criteria.getOnlyAvailable()) {
