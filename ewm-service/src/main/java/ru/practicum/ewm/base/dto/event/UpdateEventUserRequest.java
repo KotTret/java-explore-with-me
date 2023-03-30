@@ -22,8 +22,8 @@ public class UpdateEventUserRequest {
     private LocalDateTime eventDate;
     private LocationDto location;
     private Boolean paid;
-    private long participantLimit;
-    private boolean requestModeration;
+    private Long participantLimit;
+    private Boolean requestModeration;
     private String stateAction;
     @Length(min = 3, max = 120)
     private String title;

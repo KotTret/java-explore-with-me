@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.base.dto.*;
 import ru.practicum.ewm.base.dto.event.*;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
+import ru.practicum.ewm.base.enums.Status;
+import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.privateApi.service.event.PrivateEventsService;
 
 import javax.validation.Valid;
@@ -45,14 +47,14 @@ public class PrivateEventsController {
 
     @PostMapping
     public ResponseEntity<EventFullDto> create(@PathVariable Long userId,
-                                                     @RequestBody @Valid NewEventDto eventDto) {
+                                               @RequestBody @Valid NewEventDto eventDto) {
         log.info("Получен запрос POST /users/{}/events c новым событием: {}", userId, eventDto);
         return new ResponseEntity<>(service.create(userId, eventDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{eventId}")
     public ResponseEntity<EventFullDto> update(@PathVariable Long userId, @PathVariable Long eventId,
-                                                     @RequestBody @Valid UpdateEventUserRequest eventDto) {
+                                               @RequestBody @Valid UpdateEventUserRequest eventDto) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}" +
                 " c обновлённым событием id = {}: {}", userId, eventId, eventDto);
         return new ResponseEntity<>(service.update(userId, eventId, eventDto), HttpStatus.OK);
@@ -64,7 +66,10 @@ public class PrivateEventsController {
                                                                               @RequestBody EventRequestStatusUpdateRequest request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
                 " на обновление статуса события id = {}: {}", userId, eventId, request);
-        return new ResponseEntity<>(service.updateRequestStatus(userId, eventId, request), HttpStatus.CREATED);
+        if (Status.from(request.getStatus()) == null) {
+            throw new ConflictException("Status is not validate");
+        }
+        return new ResponseEntity<>(service.updateRequestStatus(userId, eventId, request), HttpStatus.OK);
     }
 
 }

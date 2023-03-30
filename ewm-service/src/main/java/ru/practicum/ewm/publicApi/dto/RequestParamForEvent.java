@@ -1,7 +1,6 @@
 package ru.practicum.ewm.publicApi.dto;
 
 import lombok.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

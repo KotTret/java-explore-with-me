@@ -53,7 +53,6 @@ public final class EventMapper {
     public static Event toEntity(UpdateEventUserRequest dto) {
         return Event.builder()
                 .annotation(dto.getAnnotation())
-                .createdOn(LocalDateTime.now())
                 .description(dto.getDescription())
                 .date(dto.getEventDate())
                 .paid(dto.getPaid())

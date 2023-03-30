@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.base.dao.EventRepository;
 import ru.practicum.ewm.base.dao.RequestRepository;
 import ru.practicum.ewm.base.dao.UserRepository;
-import ru.practicum.ewm.base.dto.ParticipationRequestDto;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 import ru.practicum.ewm.base.enums.State;
 import ru.practicum.ewm.base.enums.Status;
 import ru.practicum.ewm.base.exception.ConflictException;
@@ -35,7 +35,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
     @Override
     public List<ParticipationRequestDto> getRequests(Long userId) {
         if (userRepository.existsById(userId)) {
-            return requestRepository.findAllByRequesterId(userId);
+            return RequestMapper.toDtoList(requestRepository.findAllByRequesterId(userId));
         } else {
             throw new NotFoundException(String.format("User not found with id = %s", userId));
         }

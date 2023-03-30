@@ -52,19 +52,25 @@ public class EventCriteriaRepository {
 
     private Predicate getPredicate(EventSearchCriteria criteria, Root<Event> eventRoot) {
         List<Predicate> predicates = new ArrayList<>();
+        Predicate annotationPredicate = null;
         if (Objects.nonNull(criteria.getText())) {
-            predicates.add(
-                    criteriaBuilder.like(criteriaBuilder.lower(eventRoot.get("annotation")),
-                            "%" + criteria.getText().toLowerCase() + "%"));
-            predicates.add(
-                    criteriaBuilder.like(criteriaBuilder.lower(eventRoot.get("description")),
-                            "%" + criteria.getText().toLowerCase() + "%"));
+            annotationPredicate = criteriaBuilder.like(criteriaBuilder.lower(eventRoot.get("annotation")),
+                    "%" + criteria.getText().toLowerCase() + "%");
         }
+        if (Objects.nonNull(criteria.getText()) && annotationPredicate == null) {
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(eventRoot.get("description")),
+                    "%" + criteria.getText().toLowerCase() + "%"));
+        } else if (Objects.nonNull(criteria.getText())) {
+            Predicate descriptionPredicate = criteriaBuilder.like(criteriaBuilder.lower(eventRoot.get("description")),
+                    "%" + criteria.getText().toLowerCase() + "%");
+            predicates.add(criteriaBuilder.or(annotationPredicate, descriptionPredicate));
+        }
+
         if (criteria.getCategories() != null && !criteria.getCategories().isEmpty()) {
             Join<Event, Category> categoryJoin = eventRoot.join("category");
             predicates.add(categoryJoin.get("id").in(criteria.getCategories()));
         }
-        if (criteria.getPaid() != null) {
+        if (criteria.getPaid() != null && criteria.getPaid().equals(Boolean.TRUE)) {
             predicates.add(criteriaBuilder.equal(eventRoot.get("paid"), criteria.getPaid()));
         }
         if (criteria.getRangeStart() != null || criteria.getRangeEnd() != null) {
@@ -77,7 +83,7 @@ public class EventCriteriaRepository {
                     : LocalDateTime.MAX;
             predicates.add(criteriaBuilder.between(eventRoot.get("date"), rangeStart, rangeEnd));
         } else {
-            predicates.add(criteriaBuilder.between(eventRoot.get("date"), LocalDateTime.now(), LocalDateTime.MAX));
+            predicates.add(criteriaBuilder.between(eventRoot.get("date"), LocalDateTime.now(), LocalDateTime.now().plusYears(100)));
         }
 
         if (criteria.getOnlyAvailable() != null && criteria.getOnlyAvailable()) {

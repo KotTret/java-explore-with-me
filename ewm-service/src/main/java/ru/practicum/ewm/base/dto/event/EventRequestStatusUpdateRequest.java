@@ -1,8 +1,9 @@
 package ru.practicum.ewm.base.dto.event;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -11,7 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class EventRequestStatusUpdateRequest {
+    @NotNull
     private List<Long> requestIds;
+
+    @NotBlank
     private String status;
 
     @Override

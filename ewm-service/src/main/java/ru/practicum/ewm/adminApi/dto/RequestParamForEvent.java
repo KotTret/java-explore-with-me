@@ -1,10 +1,8 @@
 package ru.practicum.ewm.adminApi.dto;
 
 import lombok.*;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.ewm.base.enums.State;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

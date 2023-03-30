@@ -34,7 +34,7 @@ public class PublicEventsController {
                                                       @RequestParam(defaultValue = "10") int size,
                                                       HttpServletRequest request) {
         log.info("Получен запрос GET /events c параметрами: text = {}, categories = {}, paid = {}, rangeStart = {}, " +
-                "rangeEnd = {}, onlyAvailable = {}, sort = {}, from = {}, size = {}", text, categories.toArray(), paid,
+                        "rangeEnd = {}, onlyAvailable = {}, sort = {}, from = {}, size = {}", text, categories, paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         RequestParamForEvent param = RequestParamForEvent.builder()
                 .text(text)

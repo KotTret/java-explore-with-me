@@ -1,7 +1,5 @@
 package ru.practicum.ewm.base.mapper;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.base.dto.user.NewUserRequest;
 import ru.practicum.ewm.base.dto.user.UserDto;

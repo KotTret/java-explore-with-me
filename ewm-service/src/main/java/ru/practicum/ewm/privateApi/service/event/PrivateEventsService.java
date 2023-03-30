@@ -1,7 +1,7 @@
 package ru.practicum.ewm.privateApi.service.event;
 
-import ru.practicum.ewm.base.dto.*;
 import ru.practicum.ewm.base.dto.event.*;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 

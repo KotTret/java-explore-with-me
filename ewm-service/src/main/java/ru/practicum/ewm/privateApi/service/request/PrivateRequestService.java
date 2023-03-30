@@ -1,6 +1,6 @@
 package ru.practicum.ewm.privateApi.service.request;
 
-import ru.practicum.ewm.base.dto.ParticipationRequestDto;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 
 import java.util.List;
 

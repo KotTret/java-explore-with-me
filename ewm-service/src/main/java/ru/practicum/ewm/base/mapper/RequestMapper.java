@@ -2,7 +2,7 @@ package ru.practicum.ewm.base.mapper;
 
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.ewm.base.dto.ParticipationRequestDto;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 import ru.practicum.ewm.base.model.Event;
 import ru.practicum.ewm.base.model.Request;
 import ru.practicum.ewm.base.model.User;

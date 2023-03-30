@@ -9,9 +9,7 @@ import ru.practicum.ewm.base.dao.CategoriesRepository;
 import ru.practicum.ewm.base.dto.Category.CategoryDto;
 import ru.practicum.ewm.base.exception.NotFoundException;
 import ru.practicum.ewm.base.mapper.CategoryMapper;
-import ru.practicum.ewm.base.mapper.CompilationMapper;
 import ru.practicum.ewm.base.model.Category;
-import ru.practicum.ewm.base.model.Compilation;
 import ru.practicum.ewm.base.util.page.MyPageRequest;
 
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.List;
 public class PublicCategoriesServiceImpl implements PublicCategoriesService {
 
     private final CategoriesRepository categoriesRepository;
+
     @Override
     public List<CategoryDto> getAll(int from, int size) {
         MyPageRequest pageable = new MyPageRequest(from, size,

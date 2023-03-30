@@ -7,13 +7,11 @@ import org.springframework.data.repository.query.Param;
 import ru.practicum.ewm.base.enums.State;
 import ru.practicum.ewm.base.model.Category;
 import ru.practicum.ewm.base.model.Event;
-import ru.practicum.ewm.base.util.page.MyPageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 

@@ -6,10 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.base.dto.*;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 import ru.practicum.ewm.privateApi.service.request.PrivateRequestService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,7 +27,7 @@ public class PrivateRequestController {
 
     @PostMapping
     public ResponseEntity<ParticipationRequestDto> create(@PathVariable Long userId,
-                                                     @RequestParam Long eventId) {
+                                                          @RequestParam Long eventId) {
         log.info("Получен запрос POST /users/{}/requests c новым запросом на участие в Event с id = {}", userId, eventId);
         return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.CREATED);
     }
@@ -39,6 +38,6 @@ public class PrivateRequestController {
                 " c отменой запроса id = {}", userId, requestsId);
         return new ResponseEntity<>(service.update(userId, requestsId), HttpStatus.OK);
     }
-    
+
 
 }

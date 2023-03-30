@@ -15,12 +15,15 @@ import java.time.LocalDateTime;
 @Builder
 public class NewEventDto {
     @Length(min = 20, max = 2000)
+    @NotNull
     private String annotation;
     @NotNull
     private Long category;
     @Length(min = 20, max = 7000)
+    @NotNull
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull
     private LocalDateTime eventDate;
     @NotNull
     private LocationDto location;
@@ -28,6 +31,7 @@ public class NewEventDto {
     private Long participantLimit;
     private Boolean requestModeration;
     @Length(min = 3, max = 120)
+    @NotNull
     String title;
 
     @Override

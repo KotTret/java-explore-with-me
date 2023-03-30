@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "requests")
 public class Request {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)

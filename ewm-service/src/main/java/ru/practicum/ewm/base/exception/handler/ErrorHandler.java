@@ -2,7 +2,6 @@ package ru.practicum.ewm.base.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,9 +11,6 @@ import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
 import ru.practicum.ewm.base.exception.error.ApiError;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -63,31 +59,4 @@ public class ErrorHandler {
                 String.format("Field: %s. Error: must not be blank. Value: %s", field, e.getFieldValue(field)));
     }
 
-/*    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleBadRequestException(final BadRequestException e) {
-        log.info("400 {}", e.getMessage());
-        return new ErrorResponse(
-                "BAD_REQUEST",
-                "Invalid request parameter",
-                e.getMessage());
-    }*/
-
-/*    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiError handleRuntimeException(final Throwable e) {
-        StringWriter writer = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(writer);
-        e.printStackTrace(printWriter);
-        printWriter.flush();
-
-        String stackTrace = writer.toString();
-
-        log.warn("500 INTERNAL_SERVER_ERROR; message: {}; stackTrace: {}", e.getMessage(), stackTrace);
-        return new ApiError(
-                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                stackTrace,
-                e.getMessage()
-        );
-    }*/
 }

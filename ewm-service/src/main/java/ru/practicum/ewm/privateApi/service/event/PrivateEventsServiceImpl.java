@@ -10,10 +10,10 @@ import ru.practicum.ewm.base.dao.CategoriesRepository;
 import ru.practicum.ewm.base.dao.EventRepository;
 import ru.practicum.ewm.base.dao.RequestRepository;
 import ru.practicum.ewm.base.dao.UserRepository;
-import ru.practicum.ewm.base.dto.*;
 import ru.practicum.ewm.base.dto.event.*;
+import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
 import ru.practicum.ewm.base.enums.State;
-import ru.practicum.ewm.base.enums.Status;
+import ru.practicum.ewm.base.enums.UserStateAction;
 import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
 import ru.practicum.ewm.base.mapper.EventMapper;
@@ -26,6 +26,9 @@ import ru.practicum.ewm.base.util.page.MyPageRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.practicum.ewm.base.enums.Status.CONFIRMED;
+import static ru.practicum.ewm.base.enums.Status.REJECTED;
 
 @Service
 @RequiredArgsConstructor
@@ -77,6 +80,7 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
                 .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found",
                         eventDto.getCategory()))));
         event.setConfirmedRequests(0L);
+        event.setPublishedOn(LocalDateTime.now());
         event.setInitiator(userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id=%d was not found", userId))));
         event.setViews(0L);
@@ -92,27 +96,34 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     @Transactional
     @Override
     public EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest eventDto) {
+        Event eventTarget = eventRepository.findByIdAndInitiatorId(eventId, userId)
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Event not found with id = %s and userId = %s", eventId, userId)));
         Event eventUpdate = EventMapper.toEntity(eventDto);
+        checkEventDate(eventUpdate.getDate());
+
         if (eventDto.getCategory() != null) {
             eventUpdate.setCategory(categoriesRepository.findById(eventDto.getCategory())
                     .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found",
                             eventDto.getCategory()))));
         }
-        Event eventTarget = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("Event not found with id = %s and userId = %s", eventId, userId)));
+
         if (eventTarget.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event must not be published");
         }
-        if (State.from(eventDto.getStateAction()) != null) {
-            eventTarget.setState(State.valueOf(eventDto.getStateAction()));
-        }
+
         UtilMergeProperty.copyProperties(eventUpdate, eventTarget);
-        checkEventDate(eventTarget.getDate());
+        if (UserStateAction.CANCEL_REVIEW.toString().equals(eventDto.getStateAction())) {
+            eventTarget.setState(State.CANCELED);
+        } else if (UserStateAction.SEND_TO_REVIEW.toString().equals(eventDto.getStateAction())) {
+            eventTarget.setState(State.PENDING);
+        }
+
         eventRepository.flush();
         log.info("Update event: {}", eventTarget.getTitle());
         return EventMapper.toEventFullDto(eventTarget);
     }
+
 
     @Transactional
     @Override
@@ -123,15 +134,21 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         List<Long> requestIds = request.getRequestIds();
         List<Request> requests = requestRepository.findAllByIdIn(requestIds);
 
-        Status status = Status.valueOf(request.getStatus());
+        String status = request.getStatus();
 
-        if (status.equals(Status.REJECTED)) {
-            requests.forEach(r -> request.setStatus(Status.REJECTED.toString()));
-            requestRepository.flush();
-            rejectedRequests = requests.stream()
-                    .map(RequestMapper::toParticipationRequestDto)
-                    .collect(Collectors.toList());
-            return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
+        if (status.equals(REJECTED.toString())) {
+            if (status.equals(REJECTED.toString())) {
+                boolean isConfirmedRequestExists = requests.stream()
+                        .anyMatch(r -> r.getStatus().equals(CONFIRMED));
+                if (isConfirmedRequestExists) {
+                    throw new ConflictException("Cannot reject confirmed requests");
+                }
+                rejectedRequests = requests.stream()
+                        .peek(r -> r.setStatus(REJECTED))
+                        .map(RequestMapper::toParticipationRequestDto)
+                        .collect(Collectors.toList());
+                return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
+            }
         }
 
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
@@ -146,36 +163,53 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
             throw new ConflictException(String.format("Event with id=%d has reached participant limit", eventId));
         }
 
-        if (status.equals(Status.CONFIRMED)) {
+        if (status.equals(CONFIRMED.toString())) {
             if (participantLimit.equals(0L) || (potentialParticipants <= availableParticipants && !event.getRequestModeration())) {
-                requests.forEach(r -> request.setStatus(Status.CONFIRMED.toString()));
-                requestRepository.flush();
                 confirmedRequests = requests.stream()
+                        .peek(r -> {
+                            if (!r.getStatus().equals(CONFIRMED)) {
+                                r.setStatus(CONFIRMED);
+                            } else {
+                                throw new ConflictException(String.format("Request with id=%d has already been confirmed", r.getId()));
+                            }
+                        })
                         .map(RequestMapper::toParticipationRequestDto)
                         .collect(Collectors.toList());
                 event.setConfirmedRequests(approvedRequests + potentialParticipants);
             } else {
                 confirmedRequests = requests.stream()
                         .limit(availableParticipants)
-                        .peek(r -> request.setStatus(Status.CONFIRMED.toString()))
-                        .map(requestRepository::save)
+                        .peek(r -> {
+                            if (!r.getStatus().equals(CONFIRMED)) {
+                                r.setStatus(CONFIRMED);
+                            } else {
+                                throw new ConflictException(String.format("Request with id=%d has already been confirmed", r.getId()));
+                            }
+                        })
                         .map(RequestMapper::toParticipationRequestDto)
                         .collect(Collectors.toList());
                 rejectedRequests = requests.stream()
                         .skip(availableParticipants)
-                        .peek(r -> request.setStatus(Status.REJECTED.toString()))
-                        .map(requestRepository::save)
+                        .peek(r -> {
+                            if (!r.getStatus().equals(REJECTED)) {
+                                r.setStatus(REJECTED);
+                            } else {
+                                throw new ConflictException(String.format("Request with id=%d has already been rejected", r.getId()));
+                            }
+                        })
                         .map(RequestMapper::toParticipationRequestDto)
                         .collect(Collectors.toList());
                 event.setConfirmedRequests(participantLimit);
             }
         }
-        eventRepository.save(event);
+        eventRepository.flush();
+        requestRepository.flush();
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
     }
 
+
     private void checkEventDate(LocalDateTime eventDate) {
-        if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
+        if (eventDate != null && eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
             throw new ConflictException("Field: eventDate. Error: the date and time for which the event is scheduled" +
                     " cannot be earlier than two hours from the current moment. Value: " + eventDate);
         }

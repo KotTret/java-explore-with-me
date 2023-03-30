@@ -1,9 +1,7 @@
 package ru.practicum.ewm.base.dto.location;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 @Getter

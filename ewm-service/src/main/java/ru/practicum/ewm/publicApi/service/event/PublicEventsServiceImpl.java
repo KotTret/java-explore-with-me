@@ -2,7 +2,6 @@ package ru.practicum.ewm.publicApi.service.event;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +20,9 @@ import ru.practicum.ewm.base.model.EventSearchCriteria;
 import ru.practicum.ewm.base.util.page.MyPageRequest;
 import ru.practicum.ewm.publicApi.dto.RequestParamForEvent;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

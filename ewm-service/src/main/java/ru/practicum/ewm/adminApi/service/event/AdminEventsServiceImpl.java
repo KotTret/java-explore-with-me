@@ -1,10 +1,7 @@
 package ru.practicum.ewm.adminApi.service.event;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,14 +10,12 @@ import ru.practicum.ewm.adminApi.dto.RequestParamForEvent;
 import ru.practicum.ewm.base.dao.EventRepository;
 import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.event.UpdateEventAdminRequest;
+import ru.practicum.ewm.base.enums.AdminStateAction;
 import ru.practicum.ewm.base.enums.State;
 import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
-import ru.practicum.ewm.base.mapper.CompilationMapper;
 import ru.practicum.ewm.base.mapper.EventMapper;
-import ru.practicum.ewm.base.model.Compilation;
 import ru.practicum.ewm.base.model.Event;
-import ru.practicum.ewm.base.model.Location;
 import ru.practicum.ewm.base.util.UtilMergeProperty;
 import ru.practicum.ewm.base.util.page.MyPageRequest;
 
@@ -42,21 +37,26 @@ public class AdminEventsServiceImpl implements AdminEventsService {
         if (dto.getEventDate() != null) {
             checkEventDate(dto.getEventDate());
         }
-       //Event eventUpdate = EventMapper.toEntity(dto);
+        Event eventUpdate = EventMapper.toEntity(dto);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Event not found with id = %s", eventId)));
 
 
-
-
-      //  Event eventTarget = get(eventId);
+        //  Event eventTarget = get(eventId);
         if (event.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Cannot publish the event because it's not in the right state: PUBLISHED");
         } else if (event.getState().equals(State.CANCELED)) {
             throw new ConflictException("Cannot publish the event because it's not in the right state: CANCELED");
+        } else {
+            if (dto.getStateAction().equals(AdminStateAction.PUBLISH_EVENT.toString())) {
+                event.setState(State.PUBLISHED);
+            }
+            if (dto.getStateAction().equals(AdminStateAction.REJECT_EVENT.toString())) {
+                event.setState(State.CANCELED);
+            }
         }
-        BeanUtils.copyProperties(dto, event,  "annotation", "category", "description", "eventDate",
-                "location","paid","participantLimit","requestModeration","stateAction","title");
+
+        UtilMergeProperty.copyProperties(eventUpdate, event);
 
         try {
             eventRepository.flush();
@@ -77,13 +77,6 @@ public class AdminEventsServiceImpl implements AdminEventsService {
         return events.stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
-    }
-
-    private Event get(Long id) {
-        final Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Event not found with id = %s", id)));
-        log.info("Get event: {}", event.getTitle());
-        return event;
     }
 
     private void checkEventDate(LocalDateTime eventDate) {

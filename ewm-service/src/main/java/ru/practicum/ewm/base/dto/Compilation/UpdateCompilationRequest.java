@@ -3,8 +3,6 @@ package ru.practicum.ewm.base.dto.Compilation;
 import lombok.*;
 import ru.practicum.ewm.base.util.notblanknull.NotBlankNull;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Getter
