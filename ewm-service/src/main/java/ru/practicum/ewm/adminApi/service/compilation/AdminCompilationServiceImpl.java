@@ -17,7 +17,6 @@ import ru.practicum.ewm.base.mapper.CompilationMapper;
 import ru.practicum.ewm.base.model.Compilation;
 import ru.practicum.ewm.base.model.Event;
 
-import java.util.List;
 import java.util.Set;
 
 @Service

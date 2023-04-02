@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateEventUserRequest extends UpdateEventRequest{
+public class UpdateEventUserRequest extends UpdateEventRequest {
 
     private StateAction stateAction;
 

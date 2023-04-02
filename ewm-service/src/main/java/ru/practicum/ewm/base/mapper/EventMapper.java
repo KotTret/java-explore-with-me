@@ -12,7 +12,6 @@ import ru.practicum.ewm.base.model.Event;
 import ru.practicum.ewm.base.model.Location;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
