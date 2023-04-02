@@ -71,9 +71,9 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         return CompilationMapper.toDto(compilationTarget);
     }
 
-    private List<Event> findEvents(Set<Long> eventsId) {
+    private Set<Event> findEvents(Set<Long> eventsId) {
         if (eventsId == null) {
-            return List.of();
+            return Set.of();
         }
         return eventRepository.findAllByIdIn(eventsId);
     }

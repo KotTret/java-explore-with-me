@@ -1,13 +1,13 @@
 package ru.practicum.ewm.publicApi.service.event;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.StatsClient;
 import ru.practicum.dto.EndpointHitDto;
-import ru.practicum.ewm.base.dao.EventCriteriaRepository;
 import ru.practicum.ewm.base.dao.EventRepository;
 import ru.practicum.ewm.base.dto.event.EventFullDto;
 import ru.practicum.ewm.base.dto.event.EventShortDto;
@@ -22,7 +22,7 @@ import ru.practicum.ewm.publicApi.dto.RequestParamForEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,17 +32,20 @@ public class PublicEventsServiceImpl implements PublicEventsService {
 
     private final EventRepository eventRepository;
 
-    private final EventCriteriaRepository eventCriteriaRepository;
     private final StatsClient statsClient;
+
+    @Value("${ewm.service.name}")
+    private String serviceName;
+
 
     @Transactional
     @Override
-    public List<EventShortDto> getAll(RequestParamForEvent param) {
+    public Set<EventShortDto> getAll(RequestParamForEvent param) {
         MyPageRequest pageable = createPageable(param.getSort(), param.getFrom(), param.getSize());
         EventSearchCriteria eventSearchCriteria = createCriteria(param);
 
-        List<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventCriteriaRepository
-                .findAllWithFilters(pageable, eventSearchCriteria).toList());
+        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository
+                .findAllWithFilters(pageable, eventSearchCriteria).toSet());
 
         log.info("Get events list size: {}", eventShorts.size());
         saveEndpointHit(param.getRequest());
@@ -67,10 +70,11 @@ public class PublicEventsServiceImpl implements PublicEventsService {
     }
 
     private void saveEndpointHit(HttpServletRequest request) {
+
         EndpointHitDto endpointHit = EndpointHitDto.builder()
                 .ip(request.getRemoteAddr())
                 .uri(request.getRequestURI())
-                .app("ewm-main-service")
+                .app(serviceName)
                 .timestamp(LocalDateTime.now())
                 .build();
         statsClient.save(endpointHit);
@@ -78,10 +82,10 @@ public class PublicEventsServiceImpl implements PublicEventsService {
 
     private MyPageRequest createPageable(String sort, int from, int size) {
         MyPageRequest pageable = null;
-        if (sort == null || sort.equals("EVENT_DATE")) {
+        if (sort == null || sort.equalsIgnoreCase("EVENT_DATE")) {
             pageable = new MyPageRequest(from, size,
                     Sort.by(Sort.Direction.ASC, "event_date"));
-        } else if (sort.equals("VIEWS")) {
+        } else if (sort.equalsIgnoreCase("VIEWS")) {
             pageable = new MyPageRequest(from, size,
                     Sort.by(Sort.Direction.ASC, "views"));
         }

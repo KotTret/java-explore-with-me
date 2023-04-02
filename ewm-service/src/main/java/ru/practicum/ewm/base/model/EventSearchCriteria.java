@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,8 +15,8 @@ public class EventSearchCriteria {
     private String text;
     private List<Long> categories;
     private Boolean paid;
-    private String rangeStart;
-    private String rangeEnd;
+    private LocalDateTime rangeStart;
+    private LocalDateTime rangeEnd;
     private Boolean onlyAvailable;
 
 }

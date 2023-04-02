@@ -25,6 +25,7 @@ import ru.practicum.ewm.base.util.page.MyPageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewm.base.enums.Status.CONFIRMED;
@@ -45,10 +46,10 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     private final CategoriesRepository categoriesRepository;
 
     @Override
-    public List<EventShortDto> getAll(Long userId, Integer from, Integer size) {
+    public Set<EventShortDto> getAll(Long userId, Integer from, Integer size) {
         MyPageRequest pageRequest = new MyPageRequest(from, size,
                 Sort.by(Sort.Direction.ASC, "id"));
-        List<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository.findAll(pageRequest).toList());
+        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository.findAll(pageRequest).toSet());
         log.info("Get events list size: {}", eventShorts.size());
         return eventShorts;
     }
@@ -113,9 +114,9 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         }
 
         UtilMergeProperty.copyProperties(eventUpdate, eventTarget);
-        if (UserStateAction.CANCEL_REVIEW.toString().equals(eventDto.getStateAction())) {
+        if (UserStateAction.CANCEL_REVIEW.toString().equals(eventDto.getStateAction().toString())) {
             eventTarget.setState(State.CANCELED);
-        } else if (UserStateAction.SEND_TO_REVIEW.toString().equals(eventDto.getStateAction())) {
+        } else if (UserStateAction.SEND_TO_REVIEW.toString().equals(eventDto.getStateAction().toString())) {
             eventTarget.setState(State.PENDING);
         }
 

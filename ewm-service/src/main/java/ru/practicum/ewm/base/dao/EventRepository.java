@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends JpaRepository<Event, Long>, EventCriteriaRepository  {
 
 
     boolean existsByCategory(Category category);
@@ -21,7 +21,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Optional<Event> findByIdAndInitiatorId(Long id, Long userId);
 
-    List<Event> findAllByIdIn(Set<Long> ids);
+    Set<Event> findAllByIdIn(Set<Long> ids);
 
 
     @Query("SELECT e FROM Event e " +

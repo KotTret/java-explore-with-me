@@ -13,6 +13,7 @@ import ru.practicum.ewm.base.model.Location;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -26,9 +27,9 @@ public final class EventMapper {
                 .description(dto.getDescription())
                 .date(dto.getEventDate())
                 .location(new Location(dto.getLocation().getLat(), dto.getLocation().getLon()))
-                .paid(dto.getPaid())
+                .paid(dto.isPaid())
                 .participantLimit(dto.getParticipantLimit())
-                .requestModeration(dto.getRequestModeration())
+                .requestModeration(dto.isRequestModeration())
                 .state(State.PENDING)
                 .title(dto.getTitle())
                 .build();
@@ -45,7 +46,6 @@ public final class EventMapper {
                 .paid(dto.getPaid())
                 .participantLimit(dto.getParticipantLimit())
                 .requestModeration(dto.getRequestModeration())
-                .state(State.from(dto.getStateAction()))
                 .title(dto.getTitle())
                 .build();
     }
@@ -84,10 +84,6 @@ public final class EventMapper {
                 .build();
     }
 
-    public static List<EventFullDto> toEventFullDtoList(List<Event> events) {
-        return events.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
-    }
-
     public static EventShortDto toEventShortDto(Event entity) {
         return EventShortDto.builder()
                 .id(entity.getId())
@@ -102,7 +98,7 @@ public final class EventMapper {
                 .build();
     }
 
-    public static List<EventShortDto> toEventShortDtoList(List<Event> events) {
-        return events.stream().map(EventMapper::toEventShortDto).collect(Collectors.toList());
+    public static Set<EventShortDto> toEventShortDtoList(Set<Event> events) {
+        return events.stream().map(EventMapper::toEventShortDto).collect(Collectors.toSet());
     }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.base.dto.event.*;
 import ru.practicum.ewm.base.dto.request.ParticipationRequestDto;
@@ -14,8 +15,9 @@ import ru.practicum.ewm.privateApi.service.event.PrivateEventsService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/users/{userId}/events")
@@ -24,9 +26,9 @@ public class PrivateEventsController {
     public final PrivateEventsService service;
 
     @GetMapping
-    public ResponseEntity<List<EventShortDto>> getAll(@PathVariable Long userId,
-                                                      @RequestParam(defaultValue = "0") Integer from,
-                                                      @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<Set<EventShortDto>> getAll(@PathVariable Long userId,
+                                                     @RequestParam(defaultValue = "0") Integer from,
+                                                     @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получен запрос GET /users{}/events c параметрами: from = {}, size = {}", userId, from, size);
         return new ResponseEntity<>(service.getAll(userId, from, size), HttpStatus.OK);
     }

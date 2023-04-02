@@ -3,7 +3,7 @@ package ru.practicum.ewm.base.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,7 +18,7 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "pinned")
-    private Boolean pinned;
+    private boolean pinned;
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -26,7 +26,7 @@ public class Compilation {
     @JoinTable(name = "events_compilations",
             joinColumns = @JoinColumn(name = "compilation_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
-    private List<Event> events;
+    private Set<Event> events;
 
 
     @Override

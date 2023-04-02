@@ -11,6 +11,7 @@ import ru.practicum.ewm.base.exception.ConflictException;
 import ru.practicum.ewm.base.exception.NotFoundException;
 import ru.practicum.ewm.base.exception.error.ApiError;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Objects;
 
 @Slf4j
@@ -57,6 +58,17 @@ public class ErrorHandler {
                 HttpStatus.BAD_REQUEST.toString(),
                 "Incorrectly made request.",
                 String.format("Field: %s. Error: must not be blank. Value: %s", field, e.getFieldValue(field)));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleonstraintViolationException(final ConstraintViolationException e) {
+        log.error(e.getLocalizedMessage(), e.getMessage());
+
+        return new ApiError(
+                HttpStatus.BAD_REQUEST.toString(),
+                "Incorrectly made request.",
+                e.getMessage());
     }
 
 }

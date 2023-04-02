@@ -14,14 +14,14 @@ public final class CompilationMapper {
 
     public static Compilation toEntity(NewCompilationDto dto) {
         return Compilation.builder()
-                .pinned(dto.getPinned() != null && dto.getPinned())
+                .pinned(dto.isPinned())
                 .title(dto.getTitle())
                 .build();
     }
 
     public static Compilation toEntity(UpdateCompilationRequest dto) {
         return Compilation.builder()
-                .pinned(dto.getPinned())
+                .pinned(dto.isPinned())
                 .title(dto.getTitle())
                 .build();
     }
@@ -29,9 +29,9 @@ public final class CompilationMapper {
     public static CompilationDto toDto(Compilation entity) {
         return CompilationDto.builder()
                 .id(entity.getId())
-                .pinned(entity.getPinned())
+                .pinned(entity.isPinned())
                 .title(entity.getTitle())
-                .events(EventMapper.toEventShortDtoList(entity.getEvents()))
+                .events(EventMapper.toEventShortDtoList((entity.getEvents())))
                 .build();
     }
 
