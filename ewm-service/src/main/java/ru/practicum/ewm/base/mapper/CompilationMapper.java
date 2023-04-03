@@ -21,7 +21,7 @@ public final class CompilationMapper {
 
     public static Compilation toEntity(UpdateCompilationRequest dto) {
         return Compilation.builder()
-                .pinned(dto.isPinned())
+                .pinned(dto.getPinned())
                 .title(dto.getTitle())
                 .build();
     }

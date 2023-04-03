@@ -36,7 +36,7 @@ public class PublicEventsController {
                                                      @RequestParam(required = false) LocalDateTime rangeStart,
                                                      @RequestParam(required = false) LocalDateTime rangeEnd,
                                                      @RequestParam(defaultValue = "false") Boolean onlyAvailable,
-                                                     @RequestParam(required = false, defaultValue = "EVENT_DATE") String sort,
+                                                     @RequestParam(defaultValue = "EVENT_DATE") String sort,
                                                      @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                                      @RequestParam(defaultValue = "10") @Positive int size,
                                                      HttpServletRequest request) {

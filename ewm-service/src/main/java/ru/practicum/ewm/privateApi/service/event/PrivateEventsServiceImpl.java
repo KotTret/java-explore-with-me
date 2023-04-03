@@ -80,7 +80,7 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         event.setCategory(categoriesRepository.findById(eventDto.getCategory())
                 .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found",
                         eventDto.getCategory()))));
-        event.setConfirmedRequests(0L);
+        // event.setConfirmedRequests(0L);
         event.setPublishedOn(LocalDateTime.now());
         event.setInitiator(userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id=%d was not found", userId))));
@@ -157,8 +157,8 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
                         String.format("Event not found with id = %s and userId = %s", eventId, userId)));
         Long participantLimit = event.getParticipantLimit();
         Long approvedRequests = event.getConfirmedRequests();
-        Long availableParticipants = participantLimit - approvedRequests;
-        Long potentialParticipants = (long) requestIds.size();
+        long availableParticipants = participantLimit - approvedRequests;
+        long potentialParticipants = requestIds.size();
 
         if (participantLimit > 0 && participantLimit.equals(approvedRequests)) {
             throw new ConflictException(String.format("Event with id=%d has reached participant limit", eventId));

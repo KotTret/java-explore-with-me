@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewm.base.dto.location.LocationDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -28,6 +29,7 @@ public class NewEventDto {
     @NotNull
     private LocalDateTime eventDate;
     @NotNull
+    @Valid
     private LocationDto location;
     private boolean paid;
     @PositiveOrZero
